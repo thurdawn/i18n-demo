@@ -1,23 +1,15 @@
 import { defineComponent, h, resolveComponent } from 'vue';
 import { RouteRecordRaw } from 'vue-router';
-import i18n from '../locales';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/:lang(en|zh)*',
+    path: '/:lang(en|zh)?',
     component: defineComponent({
       render() {
         return h(resolveComponent('router-view'));
       },
     }),
-    beforeEnter: (to, from, next) => {
-      const lang = to.params.lang;
-      const temp = Array.isArray(lang) ? lang[0] : lang;
-      if (['en', 'zh'].includes(temp)) {
-        i18n.global.locale.value = temp;
-      }
-      return next();
-    },
+    // beforeEnter：仅在第一次注册路由时运行
     children: [
       {
         path: '',
@@ -34,6 +26,10 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/about.vue'),
       },
     ],
+  },
+  {
+    path: '/:pathMatch(.*)*', // 兜底路由
+    redirect: '/', // 404 的情况无法识别语言，不能用 lang 来判断（所以不用 404 的路由）
   },
 ];
 

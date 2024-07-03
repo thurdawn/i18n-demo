@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const { t, locale } = useI18n();
 
@@ -32,9 +32,11 @@ const navs = computed(() => [
   { text: t('navbar.about'), name: 'About' },
 ]);
 const route = useRoute();
+const router = useRouter();
 
 function toggleLocale() {
-  locale.value = locale.value === 'en' ? 'zh' : 'en';
+  let lang = locale.value === 'en' ? 'zh' : 'en';
+  router.push({ name: route.name, params: { lang } });
 }
 </script>
 
