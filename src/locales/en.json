@@ -6,5 +6,9 @@
   "main": {
     "home": "Home Page.",
     "about": "About Page."
+  },
+  "lang": {
+    "en": "English",
+    "zh": "中文"
   }
 }

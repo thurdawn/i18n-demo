@@ -1,15 +1,23 @@
 <template>
-  <ul class="flex gap-8 my-4 justify-center">
-    <li
-      v-for="item in navs"
-      class="hover:text-black"
-      :class="route.name === item.name ? 'text-black' : 'text-slate-600'"
+  <header class="flex justify-center my-4 gap-36">
+    <ul class="flex gap-8">
+      <li
+        v-for="item in navs"
+        class="hover:text-black"
+        :class="route.name === item.name ? 'text-black' : 'text-slate-600'"
+      >
+        <router-link :to="{ name: item.name }">
+          {{ item.text }}
+        </router-link>
+      </li>
+    </ul>
+    <button
+      class="border rounded px-3 py text-sm text-gray-600"
+      @click="toggleLocale"
     >
-      <router-link :to="{ name: item.name }">
-        {{ item.text }}
-      </router-link>
-    </li>
-  </ul>
+      {{ locale === 'en' ? $t('lang.zh') : $t('lang.en') }}
+    </button>
+  </header>
 </template>
 
 <script setup lang="ts">
@@ -17,13 +25,17 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const navs = computed(() => [
   { text: t('navbar.home'), name: 'Home' },
   { text: t('navbar.about'), name: 'About' },
 ]);
 const route = useRoute();
+
+function toggleLocale() {
+  locale.value = locale.value === 'en' ? 'zh' : 'en';
+}
 </script>
 
 <style scoped></style>
